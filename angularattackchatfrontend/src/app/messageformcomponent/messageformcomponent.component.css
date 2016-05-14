@@ -9,6 +9,8 @@ input {
     width: 100%;
     box-sizing: border-box;
     height: 100%;
+    border-style: solid;
+    border-width: 2px;
     font-size: 3.5vh;
 }
 

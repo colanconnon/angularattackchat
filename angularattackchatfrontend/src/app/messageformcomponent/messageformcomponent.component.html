@@ -1,10 +1,10 @@
 <div class="flex-footer">
   <div class="message-send-box-flex">
     <div class="message-send-text">
-      <input  type="text"/>
+      <input [(ngModel)]="text" type="text"/>
     </div>
     <div class="message-send-button">
-        <button>Send</button>
+        <button (click)="messageSubmit()">Send</button>
     </div>
   </div>
 </div>

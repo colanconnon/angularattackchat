@@ -1,9 +1,9 @@
 <div class="flex-col-container">
   <div class="message-box">
 
-    <app-conversationlistcomponent></app-conversationlistcomponent>
+    <app-conversationlistcomponent [conversationItems]="conversationList"></app-conversationlistcomponent>
     <div class="message-box-list">
-      <app-messagelistcomponent></app-messagelistcomponent>
+      <app-messagelistcomponent [messageListItems]="messageList"></app-messagelistcomponent>
       <app-messageformcomponent></app-messageformcomponent>
     </div>
   </div>

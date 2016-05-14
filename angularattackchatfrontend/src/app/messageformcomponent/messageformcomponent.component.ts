@@ -7,10 +7,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['messageformcomponent.component.css']
 })
 export class MessageformcomponentComponent implements OnInit {
-
+  public text: string;
+  
   constructor() {}
 
   ngOnInit() {
+    
+  }
+  messageSubmit() {
+    alert(this.text);
   }
 
 }
