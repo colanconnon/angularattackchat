@@ -35,6 +35,7 @@ const barrels: string[] = [
   'app/messageformcomponen',
   'app/converstationlistitem',
   'app/conversationlistitemcomponent',
+  'app/messagelistitemcomponent',
   /** @cli-barrel */
 ];
 

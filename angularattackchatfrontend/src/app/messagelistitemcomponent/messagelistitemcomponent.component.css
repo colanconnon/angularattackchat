@@ -1,0 +1,30 @@
+.message-box-item {
+    height: 7%;
+    width: 100%;
+}
+.message-box-text {
+    position: relative;
+    max-width: 50%;
+    height: 50%;
+    padding: 20px;
+    text-align: center;
+    background-color: #fff;
+    border: 2px solid #666;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 2px 2px 4px #888;
+    -moz-box-shadow: 2px 2px 4px #888;
+    box-shadow: 2px 2px 4px #888;
+
+}
+.mdl-list {
+    padding: 0px;
+}
+
+.message-box-right {
+    margin-right:20px;
+
+    font-size: 14px;
+    justify-content: flex-end;
+}
