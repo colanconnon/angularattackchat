@@ -106,9 +106,16 @@ router.get('/getallconversation', function*(next) {
 });
 
 router.get('/getallMessageByConversation/:conversation_id', function*(next){
-    var user_id = this.state.user.user_id;
+    var user_id = this.state.user.id;
     var conversation_id = this.params.conversation_id;
-    
+    console.log(this.state.user);
+    //select * is bad.....
+    var sql = `select * from message 
+    where message_conversation = $1 and message_user = $2;`
+    var messages = yield this.pg.db.client.query_(sql, [conversation_id, user_id]);
+    messages = messages.rows;
+    this.body = messages;
+    this.status = 200;
 });
 
 router.get('/getuserid/:username', function*(next) {

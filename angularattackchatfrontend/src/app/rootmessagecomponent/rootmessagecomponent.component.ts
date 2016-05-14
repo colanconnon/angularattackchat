@@ -47,51 +47,24 @@ export class RootmessagecomponentComponent implements OnInit {
       this.updateMessages();
     });
    
-    
-    let messageItem = new MessageItem();
-    messageItem.owner = true;
-    messageItem.messageText = "testing text";
-    messageItem.messageSender = "testing";
-    messageItem.id = 2;
-    messageItem.conversationId = 3;
-    
-    this.allMessageList.push(messageItem);
-    
-    let messageItem1 = new MessageItem();
-    messageItem1.owner = false;
-    messageItem.id = 1;
-    messageItem1.messageText = "testing text2";
-    messageItem1.messageSender = "testing2";
-    messageItem1.conversationId = 1;
-   
-    this.allMessageList.push(messageItem1);
-
-    
-    //  let conversationItem1 = new ConversationItem();
-    // conversationItem1.conversationItemTitle = "test123";
-    // conversationItem1.conversationItemText = "cest12";
-    // conversationItem1.id = 1;
-    // conversationItem1.messages = this.allMessageList.filter(x => x.conversationId == conversationItem1.id);
-    
-    //  let conversationItem2 = new ConversationItem();
-    // conversationItem2.conversationItemTitle = "Testing";
-    // conversationItem2.conversationItemText = "besting123";
-    // conversationItem2.id = 5;
-    // conversationItem2.messages = this.allMessageList.filter(x => x.conversationId == conversationItem2.id);
-    
-    // this.conversationList.push(conversationItem1);
-    // this.conversationList.push(conversationItem2);
-    
-    
-    
-    // this.updateMessages();   
-    console.log(this.conversationList);
    
   }
   
   updateMessages() {
-    console.log();
-    this.messageList = this.allMessageList.filter(x => x.conversationId == this.conversation.id);
+  
+    this.messageService.getMessageByConversationId(this.conversation.id).subscribe( (result: any[]) => {
+        this.messageList = [];
+        console.log(result);
+        for(let i = 0; i < result.length; i++){
+          let messageItem = new MessageItem();
+          messageItem.conversationId = result[i].message_conversation;
+          messageItem.id = result[i].message_id;
+          messageItem.owner = result[i].message_owner;
+          messageItem.messageSender = result[i].message_sender;
+          messageItem.messageText = result[i].message_text;
+          this.messageList.push(messageItem);
+        }
+    });
   }
   sortConversations() {
     
@@ -132,11 +105,12 @@ export class RootmessagecomponentComponent implements OnInit {
         messageItem.messageOwnerId = 1;
         this.messageService.insertMessage(messageItem).subscribe(result => {
           console.log(result);
+          this.updateMessages();
         });
         
         //end message insert block
         this.allMessageList.push(messageItem);
-        this.updateMessages();
+        
       });
       this.conversationSelectService.conversationSelectEvent$.subscribe((conversationIdNew) => {
         this.conversation = this.conversationList.filter(x => x.id == conversationIdNew)[0];
