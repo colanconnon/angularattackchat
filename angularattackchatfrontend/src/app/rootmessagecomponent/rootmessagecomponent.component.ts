@@ -45,6 +45,20 @@ export class RootmessagecomponentComponent implements OnInit {
       this.conversation = this.conversationList[0];
       this.conversationList[0].selected = true;
       this.updateMessages();
+      this.messageService.getMessagesByConversationIdPoll(this.conversation.id).subscribe((result: any[]) => {
+        //need this to poll for all messages eventually........
+        //will do that soon enough...
+        this.messageList = [];
+        for(let i = 0; i < result.length; i++){
+          let messageItem = new MessageItem();
+          messageItem.conversationId = result[i].message_conversation;
+          messageItem.id = result[i].message_id;
+          messageItem.owner = result[i].message_owner;
+          messageItem.messageSender = result[i].message_sender;
+          messageItem.messageText = result[i].message_text;
+          this.messageList.push(messageItem);
+        }
+      });
     });
    
    
@@ -54,7 +68,6 @@ export class RootmessagecomponentComponent implements OnInit {
   
     this.messageService.getMessageByConversationId(this.conversation.id).subscribe( (result: any[]) => {
         this.messageList = [];
-        console.log(result);
         for(let i = 0; i < result.length; i++){
           let messageItem = new MessageItem();
           messageItem.conversationId = result[i].message_conversation;

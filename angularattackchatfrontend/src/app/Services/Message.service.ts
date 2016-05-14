@@ -46,7 +46,15 @@ export class MessageService {
         
         headers.append('Authorization', 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiY29sYW4xIiwiaWQiOjEsImlhdCI6MTQ2MzIwNTI2NX0.DhhiaHb0GoH0XsbfU4VQaSKfAFPiloxdQDdsTbE2o6I');
         let options = new RequestOptions({headers: headers});
-        return Observable.interval(5000).switchMap(() => this.http.get(this.getMessagesUrl + id, options)).map(res => res.json()).do((result) => console.log(result));
+        return this.http.get(this.getMessagesUrl + id, options).map(res => res.json());
     }
 
+    getMessagesByConversationIdPoll(id : number) {
+        let headers = new Headers({'Content-Type': 'application/json'});
+        headers.append('Accept', 'application/json');
+        
+        headers.append('Authorization', 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiY29sYW4xIiwiaWQiOjEsImlhdCI6MTQ2MzIwNTI2NX0.DhhiaHb0GoH0XsbfU4VQaSKfAFPiloxdQDdsTbE2o6I');
+        let options = new RequestOptions({headers: headers});
+        return Observable.interval(5000).switchMap(() => this.http.get(this.getMessagesUrl + id, options)).map(res => res.json()).do((result) => console.log(result));
+    }
 }
