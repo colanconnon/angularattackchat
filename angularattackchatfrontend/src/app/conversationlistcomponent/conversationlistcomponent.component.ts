@@ -14,8 +14,8 @@ export class ConversationlistcomponentComponent implements OnInit {
   constructor() {
     this.converstionItems = new Array<ConversationItem>();
     let conversationItem1 = new ConversationItem();
-    conversationItem1.conversationItemTitle = "Testing";
-    conversationItem1.conversationItemText = "Testing123";
+    conversationItem1.conversationItemTitle = "test123";
+    conversationItem1.conversationItemText = "test12";
     conversationItem1.id = 1;
     
      let conversationItem2 = new ConversationItem();

@@ -9,9 +9,15 @@ import{ConversationItem} from '../models/conversationitem';
 })
 export class ConversationlistitemcomponentComponent implements OnInit {
   @Input() conversationItem : ConversationItem;
-  constructor() {}
+  constructor() {
+    
+  }
 
   ngOnInit() {
+  }
+  
+  itemClicked() {
+    alert(this.conversationItem.conversationItemTitle);
   }
 
 }

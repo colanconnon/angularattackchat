@@ -9,15 +9,7 @@
     padding: 0px;
     margin-top:0px;
 }
-.conversation-list-item:hover{
-    background: #555;
-    cursor: pointer;
-}
-.conversation-list-item{
-    background-color: #999;
-    height: 100%;
-    margin: 0px;
-}
+
 .mdl-list {
     padding: 0px;
 }

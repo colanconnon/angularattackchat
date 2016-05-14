@@ -1,7 +1,7 @@
 <div class="conversation-list">
   <div class="mdl-list">
     <span *ngFor="let item of converstionItems">
-      <app-conversationlistitemcomponent></app-conversationlistitemcomponent>
+      <app-conversationlistitemcomponent [conversationItem]="item"></app-conversationlistitemcomponent>
     </span>   
   </div>
 </div>
