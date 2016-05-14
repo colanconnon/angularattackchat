@@ -1,8 +1,10 @@
  <li *ngIf="!messageItem.owner" class="mdl-list__item message-box-item ">
     <span class="mdl-list__item-primary-content">
-      <span  class="message-box-text">
-        {{messageItem.messageText}}
-      </span>
+       <span class="message-box-text">
+              <strong>{{messageItem.messageSender}} says: </strong>
+              <p>{{messageItem.messageText}}</p> 
+
+        </span>
     </span>
   </li>
   <li *ngIf="messageItem.owner" class="mdl-list__item message-box-item">

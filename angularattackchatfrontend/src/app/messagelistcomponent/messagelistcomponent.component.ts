@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {NgFor, NgIf} from '@angular/common';
 import {MessageItem} from '../models/messageitem';
 import { MessagelistitemcomponentComponent} from '../messagelistitemcomponent';
 @Component({
@@ -16,6 +17,13 @@ export class MessagelistcomponentComponent implements OnInit {
     messageItem.owner = true;
     messageItem.messageText = "testing text";
     messageItem.messageSender = "testing";
+    this.messageListItems.push(messageItem);
+    
+    let messageItem1 = new MessageItem();
+    messageItem1.owner = false;
+    messageItem1.messageText = "testing text2";
+    messageItem1.messageSender = "testing2";
+    this.messageListItems.push(messageItem1);
   }
 
   ngOnInit() {

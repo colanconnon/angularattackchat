@@ -10,10 +10,7 @@ import {MessageItem} from '../models/messageitem';
 export class MessagelistitemcomponentComponent implements OnInit {
   @Input() messageItem : MessageItem;
   constructor() {
-    this.messageItem = new MessageItem();
-    this.messageItem.owner = true;
-    this.messageItem.messageText = "testing text";
-    this.messageItem.messageSender = "testing";
+   
   }
 
   ngOnInit() {
