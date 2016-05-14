@@ -9,5 +9,11 @@
 app-conversationlistcomponent {
     height: 100%;
     width: 30%;
+    padding: 0;
  }
   
+app-messagelistcomponent {
+    height: 90%;
+    width: 70%;
+    background: #aaa;
+}
