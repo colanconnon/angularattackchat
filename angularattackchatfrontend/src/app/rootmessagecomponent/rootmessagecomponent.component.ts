@@ -25,8 +25,8 @@ export class RootmessagecomponentComponent implements OnInit, AfterViewInit {
   public messageList : Array<MessageItem>;
   public conversation : ConversationItem;
   public allMessageList: Array<MessageItem>;
-  public currentUser: string = "colan1";
-  public curretUserId : number = 1;
+  public currentUser: string = localStorage.getItem('username');
+  public curretUserId : number = localStorage.getItem('user_id');
   public pollSub : any;
   constructor(private messageSubmitService: MessageSubmitService, 
               private conversationSelectService: ConversationSelectService,
@@ -133,10 +133,10 @@ export class RootmessagecomponentComponent implements OnInit, AfterViewInit {
         //now here insert the message with message owner = true and the userid = current user id
         let messageItem = new MessageItem();
         messageItem.messageText = message;
-        messageItem.messageSender = "colan1";
+        messageItem.messageSender =  this.currentUser;
         messageItem.conversationId = this.conversation.id;
         messageItem.owner = true;
-        messageItem.messageOwnerId = 1;
+        messageItem.messageOwnerId = this.curretUserId;
         this.messageService.insertMessage(messageItem).subscribe(result => {
           console.log(result);
           this.updateMessages();

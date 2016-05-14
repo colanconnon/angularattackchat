@@ -9,6 +9,8 @@ export class MessageService {
     private getUserIdUrl: string = "http://localhost:3000/getuserid/";
     private newMessageUrl: string = "http://localhost:3000/newmessage";
     private getMessagesUrl: string = "http://localhost:3000/getallmessageByConversation/";
+    private token : string = localStorage.getItem('Token');
+    
     constructor(private http: Http) { }
     
     
@@ -16,7 +18,7 @@ export class MessageService {
         let headers = new Headers({'Content-Type': 'application/json'});
         headers.append('Accept', 'application/json');
         
-        headers.append('Authorization', 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiY29sYW4xIiwiaWQiOjEsImlhdCI6MTQ2MzIwNTI2NX0.DhhiaHb0GoH0XsbfU4VQaSKfAFPiloxdQDdsTbE2o6I');
+        headers.append('Authorization', 'Bearer ' + this.token);
         let options = new RequestOptions({headers: headers});
         return this.http.get(this.getUserIdUrl + username,options)
                         .map(res => res.json());
@@ -33,7 +35,7 @@ export class MessageService {
             let headers = new Headers({'Content-Type': 'application/json'});
             headers.append('Accept', 'application/json');
         
-            headers.append('Authorization', 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiY29sYW4xIiwiaWQiOjEsImlhdCI6MTQ2MzIwNTI2NX0.DhhiaHb0GoH0XsbfU4VQaSKfAFPiloxdQDdsTbE2o6I');
+            headers.append('Authorization', 'Bearer ' +  this.token);
             let options = new RequestOptions({headers: headers});
             return this.http.post(this.newMessageUrl, body, options)
                        .map(res => res.json())
@@ -44,7 +46,7 @@ export class MessageService {
         let headers = new Headers({'Content-Type': 'application/json'});
         headers.append('Accept', 'application/json');
         
-        headers.append('Authorization', 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiY29sYW4xIiwiaWQiOjEsImlhdCI6MTQ2MzIwNTI2NX0.DhhiaHb0GoH0XsbfU4VQaSKfAFPiloxdQDdsTbE2o6I');
+        headers.append('Authorization', 'Bearer ' + this.token);
         let options = new RequestOptions({headers: headers});
         return this.http.get(this.getMessagesUrl + id, options).map(res => res.json());
     }
@@ -53,7 +55,7 @@ export class MessageService {
         let headers = new Headers({'Content-Type': 'application/json'});
         headers.append('Accept', 'application/json');
         
-        headers.append('Authorization', 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiY29sYW4xIiwiaWQiOjEsImlhdCI6MTQ2MzIwNTI2NX0.DhhiaHb0GoH0XsbfU4VQaSKfAFPiloxdQDdsTbE2o6I');
+        headers.append('Authorization', 'Bearer ' + this.token);
         let options = new RequestOptions({headers: headers});
         return Observable.interval(5000).switchMap(() => this.http.get(this.getMessagesUrl + id, options)).map(res => res.json()).do((result) => console.log(result));
     }
