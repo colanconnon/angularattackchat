@@ -7,3 +7,7 @@
     height: 100%;
     margin: 0px;
 }
+
+.selected{
+   background: #555;
+}

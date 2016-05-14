@@ -25,5 +25,9 @@ export class ConversationlistcomponentComponent implements OnInit {
   
   itemClicked(item: ConversationItem){
       this.conversationSelectServce.annouceConversationSelect(item.id);
+      this.conversationItems.forEach((item) => {
+        item.selected = false;
+      });
+      item.selected = true;
   }
 }

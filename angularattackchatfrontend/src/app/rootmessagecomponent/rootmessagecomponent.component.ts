@@ -31,12 +31,14 @@ export class RootmessagecomponentComponent implements OnInit {
     messageItem.owner = true;
     messageItem.messageText = "testing text";
     messageItem.messageSender = "testing";
+    messageItem.id = 2;
     messageItem.conversationId = 5;
     
     this.allMessageList.push(messageItem);
     
     let messageItem1 = new MessageItem();
     messageItem1.owner = false;
+    messageItem.id = 1;
     messageItem1.messageText = "testing text2";
     messageItem1.messageSender = "testing2";
     messageItem1.conversationId = 1;
@@ -58,29 +60,27 @@ export class RootmessagecomponentComponent implements OnInit {
     
     this.conversationList.push(conversationItem1);
     this.conversationList.push(conversationItem2);
-    this.conversationList.sort((a, b) => {
-        if(a.messages[0].id < b.messages[0].id) {
-         return -1;
-      }
-      if(a.messages[0].id > b.messages[0].id){
-        return 1;
-      }
-      
-      return 0;
-    });
+    
     
     this.conversationId = this.conversationList[0].id;
     this.updateMessages();   
+    console.log(this.conversationList);
+   
   }
   
   updateMessages() {
     this.messageList = this.allMessageList.filter(x => x.conversationId == this.conversationId);
   }
-
+  sortConversations() {
+    
+  }
+  
+  
   ngOnInit() {
      this.messageSubmitService.messageSendEvent$.subscribe((message) => {
         let messageItem = new MessageItem();
         messageItem.owner = true;
+        messageItem.id = 5;
         messageItem.messageText = message;
         messageItem.messageSender = "testguy";
         messageItem.conversationId = this.conversationId;

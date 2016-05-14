@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import {NgClass} from '@angular/common';
 import {ConversationItem} from '../models/conversationitem';
 import {ConversationSelectService} from '../Services/ConversationSelect.service'; 
 
@@ -10,6 +11,7 @@ import {ConversationSelectService} from '../Services/ConversationSelect.service'
 })
 export class ConversationlistitemcomponentComponent implements OnInit {
   @Input() conversationItem : ConversationItem;
+  
   constructor(private conversationSelectServce: ConversationSelectService) {
     
   }
