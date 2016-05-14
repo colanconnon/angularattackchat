@@ -76,6 +76,7 @@ router.post('/newconversation', function*(next) {
 });
 
 router.post('/newmessage', function*(next) {
+    console.log('test');
     var user_id = this.state.user.user_id;
     var message = yield parse(this);
     if(typeof message ==='string') {
@@ -85,7 +86,8 @@ router.post('/newmessage', function*(next) {
              message_text, message_user, message_conversation, 
             message_owner,message_sender)
     VALUES ($1, $2, $3, $4, $5) RETURNING message_id;`;
-    var data = yield this.pg.db.client.query_(sql, [message.text, message.user_id, message.conversation, message.message_owner, message.message_sender]);
+    var data = yield this.pg.db.client.query_(sql, [message.text, message.user_id, 
+     message.conversation, message.message_owner, message.message_sender]);
     message.id = data.rows[0].message_id;
     this.status = 201;
     this.body = message;
@@ -101,6 +103,12 @@ router.get('/getallconversation', function*(next) {
     conversations = conversations.rows;
     this.body = conversations;
     this.status = 200;
+});
+
+router.get('/getallMessageByConversation/:conversation_id', function*(next){
+    var user_id = this.state.user.user_id;
+    var conversation_id = this.params.conversation_id;
+    
 });
 
 router.get('/getuserid/:username', function*(next) {

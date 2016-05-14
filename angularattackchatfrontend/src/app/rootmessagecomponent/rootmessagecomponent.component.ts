@@ -118,6 +118,9 @@ export class RootmessagecomponentComponent implements OnInit {
                               messageItem.conversationId = this.conversation.id;
                               messageItem.owner = false;
                               console.log(messageItem);
+                              this.messageService.insertMessage(messageItem).subscribe(result => {
+                                console.log(result);
+                              })
                             });
         }
         //now here insert the message with message owner = true and the userid = current user id
@@ -127,6 +130,9 @@ export class RootmessagecomponentComponent implements OnInit {
         messageItem.conversationId = this.conversation.id;
         messageItem.owner = true;
         messageItem.messageOwnerId = 1;
+        this.messageService.insertMessage(messageItem).subscribe(result => {
+          console.log(result);
+        });
         
         //end message insert block
         this.allMessageList.push(messageItem);
