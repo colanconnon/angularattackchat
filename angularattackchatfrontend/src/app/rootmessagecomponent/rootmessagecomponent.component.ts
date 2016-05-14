@@ -178,5 +178,9 @@ export class RootmessagecomponentComponent implements OnInit, AfterViewInit {
     // });
     // }, 3000);
   }
+  
+  addNewConvo() {
+    alert("New conversation");
+  }
 
 }
