@@ -1,7 +1,7 @@
 <div class="conversation-list">
   <div class="mdl-list">
     <span *ngFor="let item of converstionItems">
-      <app-conversationlistitemcomponent [conversationItem]="item"></app-conversationlistitemcomponent>
+      <app-conversationlistitemcomponent (click)="itemClicked(item)" [conversationItem]="item"></app-conversationlistitemcomponent>
     </span>   
   </div>
 </div>

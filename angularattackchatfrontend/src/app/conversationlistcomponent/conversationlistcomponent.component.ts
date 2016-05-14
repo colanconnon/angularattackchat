@@ -30,5 +30,8 @@ export class ConversationlistcomponentComponent implements OnInit {
   ngOnInit() {
     
   }
-
+  
+  itemClicked(item: ConversationItem){
+    alert(item.conversationItemText);
+  }
 }
