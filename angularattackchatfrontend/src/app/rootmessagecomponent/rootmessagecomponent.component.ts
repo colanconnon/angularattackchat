@@ -5,34 +5,44 @@ import {MessageformcomponentComponent} from '../messageformcomponent';
 import {ConversationItem} from '../models/conversationitem';
 import {MessageItem} from '../models/messageitem';
 import {MessageSubmitService} from '../Services/MessageSubmit.service';
+import {ConversationSelectService} from '../Services/ConversationSelect.service';
 
 @Component({
   moduleId: module.id,
   selector: 'app-rootmessagecomponent',
   templateUrl: 'rootmessagecomponent.component.html',
   styleUrls: ['rootmessagecomponent.component.css'],
-  providers: [MessageSubmitService],
+  providers: [MessageSubmitService, ConversationSelectService],
   directives: [ConversationlistcomponentComponent, MessagelistcomponentComponent, MessageformcomponentComponent]
 })
 export class RootmessagecomponentComponent implements OnInit {
   public conversationList : Array<ConversationItem>;
   public messageList : Array<MessageItem>;
+  public conversationId : number;
+  public allMessageList: Array<MessageItem>;
   
-  constructor(private messageSubmitService: MessageSubmitService) {
+  constructor(private messageSubmitService: MessageSubmitService, 
+              private conversationSelectService: ConversationSelectService) {
     this.conversationList = new Array<ConversationItem>();
     this.messageList = new Array<MessageItem>();
+    this.allMessageList = new Array<MessageItem>();
     
     let messageItem = new MessageItem();
     messageItem.owner = true;
     messageItem.messageText = "testing text";
     messageItem.messageSender = "testing";
-    this.messageList.push(messageItem);
+    messageItem.conversationId = 5;
+    
+    this.allMessageList.push(messageItem);
     
     let messageItem1 = new MessageItem();
     messageItem1.owner = false;
     messageItem1.messageText = "testing text2";
     messageItem1.messageSender = "testing2";
-    this.messageList.push(messageItem1);
+    messageItem1.conversationId = 1;
+   
+    this.allMessageList.push(messageItem1);
+
     
      let conversationItem1 = new ConversationItem();
     conversationItem1.conversationItemTitle = "test123";
@@ -47,7 +57,12 @@ export class RootmessagecomponentComponent implements OnInit {
     this.conversationList.push(conversationItem1);
     this.conversationList.push(conversationItem2);
     
-   
+    this.conversationId = this.conversationList[0].id;
+    this.updateMessages();   
+  }
+  
+  updateMessages() {
+    this.messageList = this.allMessageList.filter(x => x.conversationId == this.conversationId);
   }
 
   ngOnInit() {
@@ -57,7 +72,14 @@ export class RootmessagecomponentComponent implements OnInit {
         messageItem.owner = true;
         messageItem.messageText = message;
         messageItem.messageSender = "testguy";
-        this.messageList.push(messageItem);
+        messageItem.conversationId = this.conversationId;
+        this.allMessageList.push(messageItem);
+        this.updateMessages();
+      });
+      this.conversationSelectService.conversationSelectEvent$.subscribe((conversationIdNew) => {
+        console.log(conversationIdNew);
+        this.conversationId = conversationIdNew;
+        this.updateMessages();
       });
     setTimeout(() => {
      let conversationItem1 = new ConversationItem();

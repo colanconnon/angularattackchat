@@ -3,4 +3,5 @@ export class MessageItem {
     public owner: boolean;
     public messageSender: string;
     public messageText: string;
+    public conversationId : number;
 }

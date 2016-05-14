@@ -2,6 +2,9 @@ import { Component, OnInit, Input } from '@angular/core';
 import {NgFor} from '@angular/common';
 import {ConversationlistitemcomponentComponent}  from '../conversationlistitemcomponent';
 import{ConversationItem} from '../models/conversationitem';
+import {ConversationSelectService} from '../Services/ConversationSelect.service'; 
+
+
 @Component({
   moduleId: module.id,
   selector: 'app-conversationlistcomponent',
@@ -11,7 +14,7 @@ import{ConversationItem} from '../models/conversationitem';
 })
 export class ConversationlistcomponentComponent implements OnInit {
   @Input() conversationItems : Array<ConversationItem>;
-  constructor() {
+  constructor(private conversationSelectServce: ConversationSelectService) {
     
    
   }
@@ -21,6 +24,6 @@ export class ConversationlistcomponentComponent implements OnInit {
   }
   
   itemClicked(item: ConversationItem){
-    alert(item.conversationItemText);
+      this.conversationSelectServce.annouceConversationSelect(item.id);
   }
 }
