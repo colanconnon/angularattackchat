@@ -25,6 +25,7 @@ export class RootmessagecomponentComponent implements OnInit {
   public allMessageList: Array<MessageItem>;
   public currentUser: string = "colan1";
   public curretUserId : number = 1;
+  public pollSub : any;
   constructor(private messageSubmitService: MessageSubmitService, 
               private conversationSelectService: ConversationSelectService,
               private conversationService: ConversationService,
@@ -32,6 +33,7 @@ export class RootmessagecomponentComponent implements OnInit {
     this.conversationList = new Array<ConversationItem>();
     this.messageList = new Array<MessageItem>();
     this.allMessageList = new Array<MessageItem>();
+    
     
     // var username = prompt("Give me a username");
     this.conversationService.getAll().subscribe((data: any[]) => {
@@ -45,7 +47,14 @@ export class RootmessagecomponentComponent implements OnInit {
       this.conversation = this.conversationList[0];
       this.conversationList[0].selected = true;
       this.updateMessages();
-      this.messageService.getMessagesByConversationIdPoll(this.conversation.id).subscribe((result: any[]) => {
+      this.pollMessages();
+    });
+   
+  }
+  
+  pollMessages() {
+
+     this.pollSub = this.messageService.getMessagesByConversationIdPoll(this.conversation.id).subscribe((result: any[]) => {
         //need this to poll for all messages eventually........
         //will do that soon enough...
         this.messageList = [];
@@ -57,16 +66,18 @@ export class RootmessagecomponentComponent implements OnInit {
           messageItem.messageSender = result[i].message_sender;
           messageItem.messageText = result[i].message_text;
           this.messageList.push(messageItem);
+           setTimeout( () => {
+            //let's hack the scroll to the bottom?
+            var messageDiv = document.getElementById("message-list");
+            messageDiv.scrollTop = messageDiv.scrollHeight;
+          }, 0);
         }
       });
-    });
-   
-   
+      console.log(this.pollSub);
   }
-  
   updateMessages() {
   
-    this.messageService.getMessageByConversationId(this.conversation.id).subscribe( (result: any[]) => {
+     this.messageService.getMessageByConversationId(this.conversation.id).subscribe( (result: any[]) => {
         this.messageList = [];
         for(let i = 0; i < result.length; i++){
           let messageItem = new MessageItem();
@@ -76,6 +87,11 @@ export class RootmessagecomponentComponent implements OnInit {
           messageItem.messageSender = result[i].message_sender;
           messageItem.messageText = result[i].message_text;
           this.messageList.push(messageItem);
+          setTimeout( () => {
+            //let's hack the scroll to the bottom?
+            var messageDiv = document.getElementById("message-list");
+            messageDiv.scrollTop = messageDiv.scrollHeight;
+          }, 0);
         }
     });
   }
@@ -126,8 +142,11 @@ export class RootmessagecomponentComponent implements OnInit {
         
       });
       this.conversationSelectService.conversationSelectEvent$.subscribe((conversationIdNew) => {
+        //this is where we change the conversation
         this.conversation = this.conversationList.filter(x => x.id == conversationIdNew)[0];
+        this.pollSub.unsubscribe();
         this.updateMessages();
+        this.pollMessages();
       });
     // setTimeout(() => {
     //  let conversationItem1 = new ConversationItem();
