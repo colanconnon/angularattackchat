@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import {NgIf, NgFor} from '@angular/common';
 import {MessageItem} from '../models/messageitem';
 @Component({
   moduleId: module.id,
@@ -7,8 +8,13 @@ import {MessageItem} from '../models/messageitem';
   styleUrls: ['messagelistitemcomponent.component.css']
 })
 export class MessagelistitemcomponentComponent implements OnInit {
-  private messageItem : MessageItem;
-  constructor() {}
+  @Input() messageItem : MessageItem;
+  constructor() {
+    this.messageItem = new MessageItem();
+    this.messageItem.owner = true;
+    this.messageItem.messageText = "testing text";
+    this.messageItem.messageSender = "testing";
+  }
 
   ngOnInit() {
   }

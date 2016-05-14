@@ -1,14 +1,15 @@
- <li class="mdl-list__item message-box-item ">
+ <li *ngIf="!messageItem.owner" class="mdl-list__item message-box-item ">
     <span class="mdl-list__item-primary-content">
-      <span class="message-box-text">
-      Testing123
+      <span  class="message-box-text">
+        {{messageItem.messageText}}
       </span>
     </span>
   </li>
-  <li class="mdl-list__item message-box-item">
+  <li *ngIf="messageItem.owner" class="mdl-list__item message-box-item">
     <span class="mdl-list__item-primary-content message-box-right">
         <span class="message-box-text">
-              Testing123456
+              <strong>{{messageItem.messageSender}} says: </strong>
+              <p>{{messageItem.messageText}}</p> 
 
         </span>
     </span>

@@ -12,6 +12,10 @@ export class MessagelistcomponentComponent implements OnInit {
   public messageListItems: Array<MessageItem>;
   constructor() {
     this.messageListItems = new Array<MessageItem>();
+    let messageItem = new MessageItem();
+    messageItem.owner = true;
+    messageItem.messageText = "testing text";
+    messageItem.messageSender = "testing";
   }
 
   ngOnInit() {
