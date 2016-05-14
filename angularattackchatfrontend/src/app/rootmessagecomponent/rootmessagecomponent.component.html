@@ -41,9 +41,27 @@
     <div class="message-box-list">
       <app-messagelistcomponent [messageListItems]="messageList"></app-messagelistcomponent>
       <app-messageformcomponent></app-messageformcomponent>
+      <dialog class="mdl-dialog">
+        <div class="mdl-dialog__content">
+          <p>
+            Enter names of the participants, seperated by commas
+          </p>
+          <div class="mdl-textfield mdl-js-textfield">
+            <input [(ngModel)]="conversationTxt" class="mdl-textfield__input" type="text" id="sample1">
+            <label class="mdl-textfield__label" for="sample1">Text...</label>
+          </div>
+
+        </div>
+        <div class="mdl-dialog__actions">
+          <button (click)="startNewConvo()" type="button" class="mdl-button">Start new conversation</button>
+          <button (click)="closeConvo()" type="button" class="mdl-button close">Close</button>
+        </div>
+      </dialog>
     </div>
   </div>
 </div>
     </div>
   </main>
 </div>
+
+

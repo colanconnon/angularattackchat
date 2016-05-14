@@ -8,8 +8,11 @@ import {MessageSubmitService} from '../Services/MessageSubmit.service';
 import {ConversationSelectService} from '../Services/ConversationSelect.service';
 import {ConversationService} from '../Services/Conversation.service';
 import {MessageService} from '../Services/Message.service';
+import { RouteParams, Router } from '@angular/router-deprecated';
 
 declare var componentHandler;
+// declare var dialog;
+declare function showModal();
 
 @Component({
   moduleId: module.id,
@@ -28,10 +31,15 @@ export class RootmessagecomponentComponent implements OnInit, AfterViewInit {
   public currentUser: string = localStorage.getItem('username');
   public curretUserId : number = localStorage.getItem('user_id');
   public pollSub : any;
+  public conversationTxt: string;
   constructor(private messageSubmitService: MessageSubmitService, 
               private conversationSelectService: ConversationSelectService,
               private conversationService: ConversationService,
-              private messageService : MessageService) {
+              private messageService : MessageService,
+              private router : Router) {
+    if(localStorage.getItem('Token') == null) {
+      this.router.navigate(['Login']);
+    }
     this.conversationList = new Array<ConversationItem>();
     this.messageList = new Array<MessageItem>();
     this.allMessageList = new Array<MessageItem>();
@@ -180,7 +188,40 @@ export class RootmessagecomponentComponent implements OnInit, AfterViewInit {
   }
   
   addNewConvo() {
-    alert("New conversation");
+    // var newConversationName = prompt("Enter New Conversation Name with names seperated by comma's Ex. Bob,John");
+    var dialog = <any> document.querySelector('dialog');
+    dialog.showModal();
+    
+    
+    // dialog.querySelector('.close').addEventListener('click', function() {
+    //   dialog.close();
+    // });
+  }
+  closeConvo() {
+    var dialog = <any> document.querySelector('dialog');
+    dialog.close();
+  }
+  
+  startNewConvo() {
+    var dialog = <any> document.querySelector('dialog');
+    dialog.close();
+    
+    console.log(this.conversationTxt);
+    this.conversationService.postNewConversation(this.conversationTxt + "," + this.currentUser).subscribe((result) => {
+      console.log(result);
+      this.conversationService.getAll().subscribe((data: any[]) => {
+         this.conversationList = [];
+         for(let i = 0; i < data.length; i++){
+          let conversationItem = new ConversationItem();
+          conversationItem.id = data[i].conversation_id;
+          conversationItem.conversationItemTitle = data[i].conversation_name;
+          this.conversationList.push(conversationItem);
+        }
+        this.conversation = this.conversationList[0];
+        this.conversationList[0].selected = true;
+        this.updateMessages();
+      });
+    });
   }
 
 }

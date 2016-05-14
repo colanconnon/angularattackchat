@@ -20,13 +20,13 @@ app-conversationlistcomponent {
     flex-direction: row;
     height: 100%;
     width: 100%;
-    background-color: #ddd;
+    background-color: #fff;
 }
   
 app-messagelistcomponent {
     height: 95%;
     width: 100%;
-    background: #ddd;
+    background: #fff;
     display: -webkit-flex;
     display: flex;
     -webkit-flex-direction:row;
