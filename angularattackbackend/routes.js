@@ -60,7 +60,6 @@ router.post('/public/api/user/signup', function* (next) {
 });
 
 router.post('/newconversation', function*(next) {
-    console.log(this.state.user);
     var user_id = this.state.user.user_id;
     var conversation = yield parse(this);
     if(typeof conversation === 'string') {
@@ -74,6 +73,22 @@ router.post('/newconversation', function*(next) {
     conversation.id = data.rows[0].conversation_id;
     this.status = 201;
     this.body = conversation;
+});
+
+router.post('/newmessage', function*(next) {
+    var user_id = this.state.user.user_id;
+    var message = yield parse(this);
+    if(typeof message ==='string') {
+        message = JSON.parse(message);
+    }
+    var sql = `INSERT INTO public.message(
+             message_text, message_user, message_conversation, 
+            message_owner,message_sender)
+    VALUES ($1, $2, $3, $4, $5) RETURNING message_id;`;
+    var data = yield this.pg.db.client.query_(sql, [message.text, message.user_id, message.conversation, message.message_owner, message.message_sender]);
+    message.id = data.rows[0].message_id;
+    this.status = 201;
+    this.body = message;
 });
 
 module.exports = router;
