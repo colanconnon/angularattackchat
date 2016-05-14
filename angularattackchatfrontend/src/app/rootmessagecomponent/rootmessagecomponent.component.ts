@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,  AfterViewInit } from '@angular/core';
 import {ConversationlistcomponentComponent} from '../conversationlistcomponent/conversationlistcomponent.component';
 import { MessagelistcomponentComponent } from '../messagelistcomponent/';
 import {MessageformcomponentComponent} from '../messageformcomponent';
@@ -9,6 +9,8 @@ import {ConversationSelectService} from '../Services/ConversationSelect.service'
 import {ConversationService} from '../Services/Conversation.service';
 import {MessageService} from '../Services/Message.service';
 
+declare var componentHandler;
+
 @Component({
   moduleId: module.id,
   selector: 'app-rootmessagecomponent',
@@ -18,7 +20,7 @@ import {MessageService} from '../Services/Message.service';
   ,MessageService],
   directives: [ConversationlistcomponentComponent, MessagelistcomponentComponent, MessageformcomponentComponent]
 })
-export class RootmessagecomponentComponent implements OnInit {
+export class RootmessagecomponentComponent implements OnInit, AfterViewInit {
   public conversationList : Array<ConversationItem>;
   public messageList : Array<MessageItem>;
   public conversation : ConversationItem;
@@ -34,7 +36,8 @@ export class RootmessagecomponentComponent implements OnInit {
     this.messageList = new Array<MessageItem>();
     this.allMessageList = new Array<MessageItem>();
     
-    
+   
+
     // var username = prompt("Give me a username");
     this.conversationService.getAll().subscribe((data: any[]) => {
       console.log(data);
@@ -51,7 +54,9 @@ export class RootmessagecomponentComponent implements OnInit {
     });
    
   }
-  
+  ngAfterViewInit() {
+      componentHandler.upgradeAllRegistered();
+  }
   pollMessages() {
 
      this.pollSub = this.messageService.getMessagesByConversationIdPoll(this.conversation.id).subscribe((result: any[]) => {
