@@ -63,6 +63,7 @@ export class RootmessagecomponentComponent implements OnInit {
     
     
     this.conversationId = this.conversationList[0].id;
+    this.conversationList[0].selected = true;
     this.updateMessages();   
     console.log(this.conversationList);
    
