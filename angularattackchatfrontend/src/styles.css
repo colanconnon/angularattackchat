@@ -1,6 +1,6 @@
-  html {
-            height: 100%;
-        }
+html {
+    height: 100%;
+}
         
 body {
     margin: 0;
@@ -9,7 +9,6 @@ body {
 }
 
 .flex-col-container {
-
     display: -webkit-flex;
     display: flex;
     -webkit-flex-direction: column;
