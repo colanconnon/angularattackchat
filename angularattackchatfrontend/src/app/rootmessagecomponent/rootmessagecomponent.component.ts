@@ -48,14 +48,26 @@ export class RootmessagecomponentComponent implements OnInit {
     conversationItem1.conversationItemTitle = "test123";
     conversationItem1.conversationItemText = "cest12";
     conversationItem1.id = 1;
+    conversationItem1.messages = this.allMessageList.filter(x => x.conversationId == conversationItem1.id);
     
      let conversationItem2 = new ConversationItem();
     conversationItem2.conversationItemTitle = "Testing";
     conversationItem2.conversationItemText = "besting123";
     conversationItem2.id = 5;
+    conversationItem2.messages = this.allMessageList.filter(x => x.conversationId == conversationItem2.id);
     
     this.conversationList.push(conversationItem1);
     this.conversationList.push(conversationItem2);
+    this.conversationList.sort((a, b) => {
+        if(a.messages[0].id < b.messages[0].id) {
+         return -1;
+      }
+      if(a.messages[0].id > b.messages[0].id){
+        return 1;
+      }
+      
+      return 0;
+    });
     
     this.conversationId = this.conversationList[0].id;
     this.updateMessages();   
@@ -67,7 +79,6 @@ export class RootmessagecomponentComponent implements OnInit {
 
   ngOnInit() {
      this.messageSubmitService.messageSendEvent$.subscribe((message) => {
-        console.log(message);
         let messageItem = new MessageItem();
         messageItem.owner = true;
         messageItem.messageText = message;
@@ -77,34 +88,33 @@ export class RootmessagecomponentComponent implements OnInit {
         this.updateMessages();
       });
       this.conversationSelectService.conversationSelectEvent$.subscribe((conversationIdNew) => {
-        console.log(conversationIdNew);
         this.conversationId = conversationIdNew;
         this.updateMessages();
       });
-    setTimeout(() => {
-     let conversationItem1 = new ConversationItem();
-    conversationItem1.conversationItemTitle = "eesting";
-    conversationItem1.conversationItemText = "aesting123";
-    conversationItem1.id = 3;
+    // setTimeout(() => {
+    //  let conversationItem1 = new ConversationItem();
+    // conversationItem1.conversationItemTitle = "eesting";
+    // conversationItem1.conversationItemText = "aesting123";
+    // conversationItem1.id = 3;
     
-    this.conversationList.push(conversationItem1);
-    }, 2000);
+    // this.conversationList.push(conversationItem1);
+    // }, 2000);
     
-    setTimeout(() => {
+    // setTimeout(() => {
      
     
-    this.conversationList.sort((x1, x2) =>{
-      if(x1.id < x2.id) {
-         return -1;
-      }
-      if(x1.id > x2.id){
-        return 1;
-      }
+    // this.conversationList.sort((x1, x2) =>{
+      // if(x1.id < x2.id) {
+      //    return -1;
+      // }
+      // if(x1.id > x2.id){
+      //   return 1;
+      // }
       
-      return 0;
+      // return 0;
      
-    });
-    }, 3000);
+    // });
+    // }, 3000);
   }
 
 }
