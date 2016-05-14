@@ -4,19 +4,21 @@ import { MessagelistcomponentComponent } from '../messagelistcomponent/';
 import {MessageformcomponentComponent} from '../messageformcomponent';
 import {ConversationItem} from '../models/conversationitem';
 import {MessageItem} from '../models/messageitem';
+import {MessageSubmitService} from '../Services/MessageSubmit.service';
 
 @Component({
   moduleId: module.id,
   selector: 'app-rootmessagecomponent',
   templateUrl: 'rootmessagecomponent.component.html',
   styleUrls: ['rootmessagecomponent.component.css'],
+  providers: [MessageSubmitService],
   directives: [ConversationlistcomponentComponent, MessagelistcomponentComponent, MessageformcomponentComponent]
 })
 export class RootmessagecomponentComponent implements OnInit {
   public conversationList : Array<ConversationItem>;
   public messageList : Array<MessageItem>;
   
-  constructor() {
+  constructor(private messageSubmitService: MessageSubmitService) {
     this.conversationList = new Array<ConversationItem>();
     this.messageList = new Array<MessageItem>();
     
@@ -44,9 +46,19 @@ export class RootmessagecomponentComponent implements OnInit {
     
     this.conversationList.push(conversationItem1);
     this.conversationList.push(conversationItem2);
+    
+   
   }
 
   ngOnInit() {
+     this.messageSubmitService.messageSendEvent$.subscribe((message) => {
+        console.log(message);
+        let messageItem = new MessageItem();
+        messageItem.owner = true;
+        messageItem.messageText = message;
+        messageItem.messageSender = "testguy";
+        this.messageList.push(messageItem);
+      });
     setTimeout(() => {
      let conversationItem1 = new ConversationItem();
     conversationItem1.conversationItemTitle = "eesting";

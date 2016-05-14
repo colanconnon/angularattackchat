@@ -1,21 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-
+import {MessageSubmitService} from '../Services/MessageSubmit.service';
 @Component({
   moduleId: module.id,
   selector: 'app-messageformcomponent',
   templateUrl: 'messageformcomponent.component.html',
-  styleUrls: ['messageformcomponent.component.css']
+  styleUrls: ['messageformcomponent.component.css'],
+
 })
 export class MessageformcomponentComponent implements OnInit {
   public text: string;
   
-  constructor() {}
+  constructor(private messageSubmitSerivce: MessageSubmitService) {}
 
   ngOnInit() {
     
   }
   messageSubmit() {
-    alert(this.text);
+
+    this.messageSubmitSerivce.announceMessageSend(this.text);
+    this.text = '';
   }
 
 }
