@@ -34,19 +34,43 @@ export class RootmessagecomponentComponent implements OnInit {
     
      let conversationItem1 = new ConversationItem();
     conversationItem1.conversationItemTitle = "test123";
-    conversationItem1.conversationItemText = "test12";
+    conversationItem1.conversationItemText = "cest12";
     conversationItem1.id = 1;
     
      let conversationItem2 = new ConversationItem();
     conversationItem2.conversationItemTitle = "Testing";
-    conversationItem2.conversationItemText = "Testing123";
-    conversationItem2.id = 1;
+    conversationItem2.conversationItemText = "besting123";
+    conversationItem2.id = 5;
     
     this.conversationList.push(conversationItem1);
     this.conversationList.push(conversationItem2);
   }
 
   ngOnInit() {
+    setTimeout(() => {
+     let conversationItem1 = new ConversationItem();
+    conversationItem1.conversationItemTitle = "eesting";
+    conversationItem1.conversationItemText = "aesting123";
+    conversationItem1.id = 3;
+    
+    this.conversationList.push(conversationItem1);
+    }, 2000);
+    
+    setTimeout(() => {
+     
+    
+    this.conversationList.sort((x1, x2) =>{
+      if(x1.id < x2.id) {
+         return -1;
+      }
+      if(x1.id > x2.id){
+        return 1;
+      }
+      
+      return 0;
+     
+    });
+    }, 3000);
   }
 
 }
