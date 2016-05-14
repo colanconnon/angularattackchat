@@ -23,7 +23,7 @@ app-conversationlistcomponent {
 }
   
 app-messagelistcomponent {
-    height: 90%;
+    height: 95%;
     width: 100%;
     background: #aaa;
     display: -webkit-flex;
@@ -37,5 +37,5 @@ app-messageformcomponent{
     -webkit-flex-direction:row;
     flex-direction: row;
     width: 100%;
-    height: 10%;
+    height: 5%;
 }

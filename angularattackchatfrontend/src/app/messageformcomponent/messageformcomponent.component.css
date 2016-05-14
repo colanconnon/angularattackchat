@@ -5,3 +5,31 @@
     align-self: flex-end;
     width:100%;
 }
+input {
+    width: 100%;
+    box-sizing: border-box;
+    height: 100%;
+    font-size: 3.5vh;
+}
+
+button {
+    width: 100%;
+    box-sizing: border-box;
+    height: 100%;
+}
+.message-send-box-flex {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+}
+.message-send-text {
+    width: 93%;
+    height: 100%;
+}
+.message-send-button{
+    width: 7%;
+    height: 100%;
+}
