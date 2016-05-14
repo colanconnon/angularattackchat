@@ -26,3 +26,7 @@ angularattackchatfrontend/e2e/*.map
 
 #System Files
 angularattackchatfrontend/.DS_Store
+
+angularattackbackend/secrets.js
+
+angularattackbackend/node_modules

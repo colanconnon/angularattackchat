@@ -21,11 +21,15 @@ export class RootmessagecomponentComponent implements OnInit {
   public conversationId : number;
   public allMessageList: Array<MessageItem>;
   
+  
   constructor(private messageSubmitService: MessageSubmitService, 
               private conversationSelectService: ConversationSelectService) {
     this.conversationList = new Array<ConversationItem>();
     this.messageList = new Array<MessageItem>();
     this.allMessageList = new Array<MessageItem>();
+    
+    var username = prompt("Give me a username");
+   
     
     let messageItem = new MessageItem();
     messageItem.owner = true;
