@@ -6,13 +6,14 @@ import {ConversationItem} from '../models/conversationitem';
 import {MessageItem} from '../models/messageitem';
 import {MessageSubmitService} from '../Services/MessageSubmit.service';
 import {ConversationSelectService} from '../Services/ConversationSelect.service';
+import {ConversationService} from '../Services/Conversation.service';
 
 @Component({
   moduleId: module.id,
   selector: 'app-rootmessagecomponent',
   templateUrl: 'rootmessagecomponent.component.html',
   styleUrls: ['rootmessagecomponent.component.css'],
-  providers: [MessageSubmitService, ConversationSelectService],
+  providers: [MessageSubmitService, ConversationSelectService, ConversationService],
   directives: [ConversationlistcomponentComponent, MessagelistcomponentComponent, MessageformcomponentComponent]
 })
 export class RootmessagecomponentComponent implements OnInit {
@@ -23,12 +24,24 @@ export class RootmessagecomponentComponent implements OnInit {
   
   
   constructor(private messageSubmitService: MessageSubmitService, 
-              private conversationSelectService: ConversationSelectService) {
+              private conversationSelectService: ConversationSelectService,
+              private conversationService: ConversationService) {
     this.conversationList = new Array<ConversationItem>();
     this.messageList = new Array<MessageItem>();
     this.allMessageList = new Array<MessageItem>();
     
-    var username = prompt("Give me a username");
+    // var username = prompt("Give me a username");
+    this.conversationService.getAll().subscribe((data: any[]) => {
+      console.log(data);
+      for(let i = 0; i < data.length; i++){
+        let conversationItem = new ConversationItem();
+        conversationItem.id = data[i].conversaton_id;
+        conversationItem.conversationItemTitle = data[i].conversation_name;
+        this.conversationList.push(conversationItem);
+      }
+      this.conversationId = this.conversationList[0].id;
+      this.conversationList[0].selected = true;
+    });
    
     
     let messageItem = new MessageItem();
@@ -50,25 +63,24 @@ export class RootmessagecomponentComponent implements OnInit {
     this.allMessageList.push(messageItem1);
 
     
-     let conversationItem1 = new ConversationItem();
-    conversationItem1.conversationItemTitle = "test123";
-    conversationItem1.conversationItemText = "cest12";
-    conversationItem1.id = 1;
-    conversationItem1.messages = this.allMessageList.filter(x => x.conversationId == conversationItem1.id);
+    //  let conversationItem1 = new ConversationItem();
+    // conversationItem1.conversationItemTitle = "test123";
+    // conversationItem1.conversationItemText = "cest12";
+    // conversationItem1.id = 1;
+    // conversationItem1.messages = this.allMessageList.filter(x => x.conversationId == conversationItem1.id);
     
-     let conversationItem2 = new ConversationItem();
-    conversationItem2.conversationItemTitle = "Testing";
-    conversationItem2.conversationItemText = "besting123";
-    conversationItem2.id = 5;
-    conversationItem2.messages = this.allMessageList.filter(x => x.conversationId == conversationItem2.id);
+    //  let conversationItem2 = new ConversationItem();
+    // conversationItem2.conversationItemTitle = "Testing";
+    // conversationItem2.conversationItemText = "besting123";
+    // conversationItem2.id = 5;
+    // conversationItem2.messages = this.allMessageList.filter(x => x.conversationId == conversationItem2.id);
     
-    this.conversationList.push(conversationItem1);
-    this.conversationList.push(conversationItem2);
+    // this.conversationList.push(conversationItem1);
+    // this.conversationList.push(conversationItem2);
     
     
-    this.conversationId = this.conversationList[0].id;
-    this.conversationList[0].selected = true;
-    this.updateMessages();   
+    
+    // this.updateMessages();   
     console.log(this.conversationList);
    
   }

@@ -91,4 +91,16 @@ router.post('/newmessage', function*(next) {
     this.body = message;
 });
 
+router.get('/getallconversation', function*(next) {
+    var username = this.state.user.user;
+    console.log(this.state.user);
+    var sql = `SELECT conversation_id, conversation_name
+    FROM public.conversation 
+    where conversation.conversation_name like $1;`
+    var conversations = yield this.pg.db.client.query_(sql, ['%'+ username + '%']);
+    conversations = conversations.rows;
+    this.body = conversations;
+    this.status = 200;
+});
+
 module.exports = router;
