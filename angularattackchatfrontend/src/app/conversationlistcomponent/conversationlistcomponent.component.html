@@ -1,9 +1,7 @@
 <div class="conversation-list">
   <div class="mdl-list">
-    <app-conversationlistitemcomponent></app-conversationlistitemcomponent>
-    <app-conversationlistitemcomponent></app-conversationlistitemcomponent>
-    <app-conversationlistitemcomponent></app-conversationlistitemcomponent>
-    <app-conversationlistitemcomponent></app-conversationlistitemcomponent>
-    <app-conversationlistitemcomponent></app-conversationlistitemcomponent>
+    <span *ngFor="let item of converstionItems">
+      <app-conversationlistitemcomponent></app-conversationlistitemcomponent>
+    </span>   
   </div>
 </div>
