@@ -103,4 +103,14 @@ router.get('/getallconversation', function*(next) {
     this.status = 200;
 });
 
+router.get('/getuserid/:username', function*(next) {
+   var username = this.params.username;
+   var sql = `select user_id, username from users where username = $1`;
+   var user = yield this.pg.db.client.query_(sql, [username]);
+   user = user.rows[0];
+   this.body = user;
+   this.status = 200;
+    
+});
+
 module.exports = router;

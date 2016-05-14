@@ -4,4 +4,5 @@ export class MessageItem {
     public messageSender: string;
     public messageText: string;
     public conversationId : number;
+    public messageOwnerId: number;
 }

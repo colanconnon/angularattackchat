@@ -7,13 +7,15 @@ import {MessageItem} from '../models/messageitem';
 import {MessageSubmitService} from '../Services/MessageSubmit.service';
 import {ConversationSelectService} from '../Services/ConversationSelect.service';
 import {ConversationService} from '../Services/Conversation.service';
+import {MessageService} from '../Services/Message.service';
 
 @Component({
   moduleId: module.id,
   selector: 'app-rootmessagecomponent',
   templateUrl: 'rootmessagecomponent.component.html',
   styleUrls: ['rootmessagecomponent.component.css'],
-  providers: [MessageSubmitService, ConversationSelectService, ConversationService],
+  providers: [MessageSubmitService, ConversationSelectService, ConversationService
+  ,MessageService],
   directives: [ConversationlistcomponentComponent, MessagelistcomponentComponent, MessageformcomponentComponent]
 })
 export class RootmessagecomponentComponent implements OnInit {
@@ -22,10 +24,11 @@ export class RootmessagecomponentComponent implements OnInit {
   public conversation : ConversationItem;
   public allMessageList: Array<MessageItem>;
   public currentUser: string = "colan1";
-  
+  public curretUserId : number = 1;
   constructor(private messageSubmitService: MessageSubmitService, 
               private conversationSelectService: ConversationSelectService,
-              private conversationService: ConversationService) {
+              private conversationService: ConversationService,
+              private messageService : MessageService) {
     this.conversationList = new Array<ConversationItem>();
     this.messageList = new Array<MessageItem>();
     this.allMessageList = new Array<MessageItem>();
@@ -97,12 +100,7 @@ export class RootmessagecomponentComponent implements OnInit {
   
   ngOnInit() {
      this.messageSubmitService.messageSendEvent$.subscribe((message) => {
-        let messageItem = new MessageItem();
-       
       
-        messageItem.messageText = message;
-        messageItem.messageSender = "colan1";
-        messageItem.conversationId = this.conversation.id;
         //split the conversation id into a list
         let conversationUsers = this.conversation.conversationItemTitle.split(',');
         conversationUsers = conversationUsers.filter(x => x != this.currentUser);
@@ -110,10 +108,26 @@ export class RootmessagecomponentComponent implements OnInit {
         //get al the users that arent the current users so we can insert the message as false
         for(let i = 0; i < conversationUsers.length; i++){
           //insert all the messages with owner = false;
-          messageItem.owner = false;
+        
+          this.messageService.getUserInformation(conversationUsers[i])
+                            .subscribe((result) => {
+                              let messageItem = new MessageItem();
+                              messageItem.messageText = message;
+                              messageItem.messageSender = this.currentUser;
+                              messageItem.messageOwnerId = result.user_id;
+                              messageItem.conversationId = this.conversation.id;
+                              messageItem.owner = false;
+                              console.log(messageItem);
+                            });
         }
         //now here insert the message with message owner = true and the userid = current user id
+        let messageItem = new MessageItem();
+        messageItem.messageText = message;
+        messageItem.messageSender = "colan1";
+        messageItem.conversationId = this.conversation.id;
         messageItem.owner = true;
+        messageItem.messageOwnerId = 1;
+        
         //end message insert block
         this.allMessageList.push(messageItem);
         this.updateMessages();
