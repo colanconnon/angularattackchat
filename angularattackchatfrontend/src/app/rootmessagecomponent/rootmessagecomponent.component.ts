@@ -19,9 +19,9 @@ import {ConversationService} from '../Services/Conversation.service';
 export class RootmessagecomponentComponent implements OnInit {
   public conversationList : Array<ConversationItem>;
   public messageList : Array<MessageItem>;
-  public conversationId : number;
+  public conversation : ConversationItem;
   public allMessageList: Array<MessageItem>;
-  
+  public currentUser: string = "colan1";
   
   constructor(private messageSubmitService: MessageSubmitService, 
               private conversationSelectService: ConversationSelectService,
@@ -35,12 +35,13 @@ export class RootmessagecomponentComponent implements OnInit {
       console.log(data);
       for(let i = 0; i < data.length; i++){
         let conversationItem = new ConversationItem();
-        conversationItem.id = data[i].conversaton_id;
+        conversationItem.id = data[i].conversation_id;
         conversationItem.conversationItemTitle = data[i].conversation_name;
         this.conversationList.push(conversationItem);
       }
-      this.conversationId = this.conversationList[0].id;
+      this.conversation = this.conversationList[0];
       this.conversationList[0].selected = true;
+      this.updateMessages();
     });
    
     
@@ -49,7 +50,7 @@ export class RootmessagecomponentComponent implements OnInit {
     messageItem.messageText = "testing text";
     messageItem.messageSender = "testing";
     messageItem.id = 2;
-    messageItem.conversationId = 5;
+    messageItem.conversationId = 3;
     
     this.allMessageList.push(messageItem);
     
@@ -86,7 +87,8 @@ export class RootmessagecomponentComponent implements OnInit {
   }
   
   updateMessages() {
-    this.messageList = this.allMessageList.filter(x => x.conversationId == this.conversationId);
+    console.log();
+    this.messageList = this.allMessageList.filter(x => x.conversationId == this.conversation.id);
   }
   sortConversations() {
     
@@ -96,16 +98,28 @@ export class RootmessagecomponentComponent implements OnInit {
   ngOnInit() {
      this.messageSubmitService.messageSendEvent$.subscribe((message) => {
         let messageItem = new MessageItem();
-        messageItem.owner = true;
-        messageItem.id = 5;
+       
+      
         messageItem.messageText = message;
-        messageItem.messageSender = "testguy";
-        messageItem.conversationId = this.conversationId;
+        messageItem.messageSender = "colan1";
+        messageItem.conversationId = this.conversation.id;
+        //split the conversation id into a list
+        let conversationUsers = this.conversation.conversationItemTitle.split(',');
+        conversationUsers = conversationUsers.filter(x => x != this.currentUser);
+        console.log(conversationUsers);
+        //get al the users that arent the current users so we can insert the message as false
+        for(let i = 0; i < conversationUsers.length; i++){
+          //insert all the messages with owner = false;
+          messageItem.owner = false;
+        }
+        //now here insert the message with message owner = true and the userid = current user id
+        messageItem.owner = true;
+        //end message insert block
         this.allMessageList.push(messageItem);
         this.updateMessages();
       });
       this.conversationSelectService.conversationSelectEvent$.subscribe((conversationIdNew) => {
-        this.conversationId = conversationIdNew;
+        this.conversation = this.conversationList.filter(x => x.id == conversationIdNew)[0];
         this.updateMessages();
       });
     // setTimeout(() => {
