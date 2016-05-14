@@ -1,0 +1,28 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+angularattackchatfrontend/dist
+angularattackchatfrontend/tmp
+
+# dependencies
+angularattackchatfrontend/node_modules
+angularattackchatfrontend/bower_components
+
+# IDEs and editors
+angularattackchatfrontend//.idea
+
+# misc
+angularattackchatfrontend/.sass-cache
+angularattackchatfrontend/connect.lock
+angularattackchatfrontend/coverage/*
+angularattackchatfrontend/libpeerconnection.log
+angularattackchatfrontend/npm-debug.log
+angularattackchatfrontend/testem.log
+angularattackchatfrontend/typings
+
+# e2e
+angularattackchatfrontend/e2e/*.js
+angularattackchatfrontend/e2e/*.map
+
+#System Files
+angularattackchatfrontend/.DS_Store
