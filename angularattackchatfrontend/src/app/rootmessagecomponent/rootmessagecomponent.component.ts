@@ -122,8 +122,7 @@ export class RootmessagecomponentComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // Finally, if the user has denied notifications and you 
-  // want to be respectful there is no need to bother them any more.
+
 }
   ngAfterViewInit() {
       componentHandler.upgradeAllRegistered();
@@ -143,6 +142,9 @@ export class RootmessagecomponentComponent implements OnInit, AfterViewInit {
           messageItem.messageText = result[i].message_text;
           if(messageItem.id > this.lastMessageId) {
             this.lastMessageId = messageItem.id;
+            if(messageItem.owner == false){
+              this.notifyMe(messageItem.messageSender + " Says  " + messageItem.messageText);
+            }
           }
           this.messageList.push(messageItem);
            setTimeout( () => {
@@ -227,30 +229,7 @@ export class RootmessagecomponentComponent implements OnInit, AfterViewInit {
         this.updateMessages();
         this.pollMessages();
       });
-    // setTimeout(() => {
-    //  let conversationItem1 = new ConversationItem();
-    // conversationItem1.conversationItemTitle = "eesting";
-    // conversationItem1.conversationItemText = "aesting123";
-    // conversationItem1.id = 3;
     
-    // this.conversationList.push(conversationItem1);
-    // }, 2000);
-    
-    // setTimeout(() => {
-     
-    
-    // this.conversationList.sort((x1, x2) =>{
-      // if(x1.id < x2.id) {
-      //    return -1;
-      // }
-      // if(x1.id > x2.id){
-      //   return 1;
-      // }
-      
-      // return 0;
-     
-    // });
-    // }, 3000);
   }
   
   addNewConvo() {
@@ -259,9 +238,7 @@ export class RootmessagecomponentComponent implements OnInit, AfterViewInit {
     dialog.showModal();
     
     
-    // dialog.querySelector('.close').addEventListener('click', function() {
-    //   dialog.close();
-    // });
+    
   }
   closeConvo() {
     var dialog = <any> document.querySelector('dialog');
