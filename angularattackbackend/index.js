@@ -32,6 +32,6 @@ app
   .use(routes.routes())
   .use(routes.allowedMethods());
 
-app.listen(3000);
+app.listen(80);
 
 console.log('the app is listening on port 3000')
