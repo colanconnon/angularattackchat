@@ -43,6 +43,7 @@ export class RegistercomponentComponent implements OnInit, AfterViewInit {
         timeout: 3000
       };
       snackbar.MaterialSnackbar.showSnackbar(data);
+      this.router.navigate(["Login"]);
     });
   }
   
