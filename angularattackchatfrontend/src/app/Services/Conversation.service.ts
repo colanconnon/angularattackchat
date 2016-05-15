@@ -26,7 +26,7 @@ export class ConversationService {
         //hardcoded for now
         headers.append('Authorization', 'Bearer ' + this.token);
         let options = new RequestOptions({headers: headers});
-        return Observable.interval(6000).switchMap(() => this.http.get(this.conversationurl, options)).map(res => res.json());
+        return Observable.interval(4000).switchMap(() => this.http.get(this.conversationurl, options)).map(res => res.json());
                    
     }
     

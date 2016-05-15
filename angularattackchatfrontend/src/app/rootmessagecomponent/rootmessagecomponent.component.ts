@@ -54,7 +54,12 @@ export class RootmessagecomponentComponent implements OnInit, AfterViewInit {
         let conversationItem = new ConversationItem();
         conversationItem.id = data[i].conversation_id;
         conversationItem.conversationItemTitle = data[i].conversation_name;
-        conversationItem.conversationItemText = data[i].message_text;
+         if(data[i].message_text === null) {
+          conversationItem.conversationItemText = "";
+        } 
+        else {
+          conversationItem.conversationItemText = data[i].message_text;
+        }
         if(data[i].m_id > this.lastMessageId){
           this.lastMessageId = data[i].m_id;
         }
@@ -81,7 +86,12 @@ export class RootmessagecomponentComponent implements OnInit, AfterViewInit {
         let conversationItem = new ConversationItem();
         conversationItem.id = data[i].conversation_id;
         conversationItem.conversationItemTitle = data[i].conversation_name;
-        conversationItem.conversationItemText = data[i].message_text;
+        if(data[i].message_text === null) {
+          conversationItem.conversationItemText = "";
+        } 
+        else {
+          conversationItem.conversationItemText = data[i].message_text;
+        }
         if(conversationItem.id == this.conversation.id){
           conversationItem.selected = true;
         }
@@ -271,6 +281,7 @@ export class RootmessagecomponentComponent implements OnInit, AfterViewInit {
           let conversationItem = new ConversationItem();
           conversationItem.id = data[i].conversation_id;
           conversationItem.conversationItemTitle = data[i].conversation_name;
+          conversationItem.conversationItemText = "";
           this.conversationList.push(conversationItem);
         }
         this.conversation = this.conversationList[0];

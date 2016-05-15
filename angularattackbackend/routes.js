@@ -96,14 +96,25 @@ router.post('/newmessage', function*(next) {
 router.get('/getallconversation', function*(next) {
     var username = this.state.user.user;
     console.log(this.state.user);
-    var sql = `select m1.conversation_id, m1.conversation_name, m1.m_id, message_text from (select  conversation_id, conversation_name,MAX(message_id) as m_id
+    // var sql = `select m1.conversation_id, m1.conversation_name, m1.m_id, message_text from (select  conversation_id, conversation_name,MAX(message_id) as m_id
+    //     from conversation 
+    //     inner join message on message.message_conversation = conversation.conversation_id
+    //     where conversation.conversation_name like $1
+    //     Group By Conversation_id
+    //     order by MAX(message_id) ASC) as m1
+    //     inner join message on m1.m_id = message.message_id
+    //     order by m1.m_id DESC;`
+        
+    var sql = `
+    select m1.conversation_id, m1.conversation_name, m1.m_id, message_text from (select  conversation_id, conversation_name,MAX(message_id) as m_id
         from conversation 
-        inner join message on message.message_conversation = conversation.conversation_id
+        left outer join message on message.message_conversation = conversation.conversation_id
         where conversation.conversation_name like $1
         Group By Conversation_id
-        order by MAX(message_id) ASC) as m1
-        inner join message on m1.m_id = message.message_id
-        order by m1.m_id DESC;`
+        ORDER BY MAX(message.message_id) NULLS FIRST) as m1
+        left outer join message on m1.m_id = message.message_id
+        order by m1.m_id DESC NULLS FIRST;
+    `;
     var conversations = yield this.pg.db.client.query_(sql, ['%'+ username + '%']);
     conversations = conversations.rows;
     this.body = conversations;
