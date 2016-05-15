@@ -5,7 +5,7 @@ import 'rxjs/Rx';
 
 @Injectable()
 export class LoginService {
-    private LoginUrl: string = 'http://localhost:3000/public/api/user/login';
+    private LoginUrl: string = 'https://young-ocean-19580.herokuapp.com/public/api/user/login';
     constructor(private http: Http) { }
     
     Login(username: string, password: string) {

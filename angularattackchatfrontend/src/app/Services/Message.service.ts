@@ -7,10 +7,11 @@ import {MessageItem} from '../models/messageitem';
 
 @Injectable()
 export class MessageService {
-    private getUserIdUrl: string = "http://localhost:3000/getuserid/";
-    private newMessageUrl: string = "http://localhost:3000/newmessage";
-    private getMessagesUrl: string = "http://localhost:3000/getallmessageByConversation/";
-    private getNewestMessageURL : string = "http://localhost:3000/getnewestmessage";
+    private domain : string ="https://young-ocean-19580.herokuapp.com/";
+    private getUserIdUrl: string = this.domain +"getuserid/";
+    private newMessageUrl: string = this.domain +"newmessage";
+    private getMessagesUrl: string = this.domain +"getallmessageByConversation/";
+    private getNewestMessageURL : string = this.domain +"getnewestmessage";
     private token : string = localStorage.getItem('Token');
     
     constructor(private http: Http) { }

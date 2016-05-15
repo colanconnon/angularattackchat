@@ -5,8 +5,8 @@ import 'rxjs/Rx';
 
 @Injectable()
 export class ConversationService {
-    private conversationurl : string = "http://localhost:3000/getallconversation";
-    private newConversationUrl: string = "http://localhost:3000/newconversation";
+    private conversationurl : string = "https://young-ocean-19580.herokuapp.com/getallconversation";
+    private newConversationUrl: string = "https://young-ocean-19580.herokuapp.com/newconversation";
     private token : string = localStorage.getItem('Token');
     constructor(private http: Http) { }
 
