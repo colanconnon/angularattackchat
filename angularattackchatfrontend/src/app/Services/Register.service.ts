@@ -6,6 +6,12 @@ import 'rxjs/Rx';
 @Injectable()
 export class RegisterService {
 
-    constructor() { }
+    constructor(private http: Http) { 
+        
+    }
+    
+    Register(username: string, password: string, confirmPassword: string) {
+        
+    }
 
 }

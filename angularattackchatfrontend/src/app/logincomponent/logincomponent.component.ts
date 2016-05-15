@@ -32,5 +32,9 @@ export class LogincomponentComponent implements OnInit, AfterViewInit {
       this.router.navigate(['Home']);
     });
   }
+  
+  goToRegister() {
+    this.router.navigate(["Register"]);
+  }
 
 }
