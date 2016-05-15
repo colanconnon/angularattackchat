@@ -108,8 +108,7 @@ export class RootmessagecomponentComponent implements OnInit, AfterViewInit {
             if(this.conversation == null){
               this.conversation = this.conversationList[0];
               this.conversationList[0].selected = true;
-              this.updateMessages();
-              this.pollMessages();
+
               this.messageService.getNewestMessage().subscribe( (result) => {
                 console.log(this.lastMessageId + "     " + result[0].message_id);
                 if(result[0].message_id > this.lastMessageId){
@@ -287,8 +286,11 @@ export class RootmessagecomponentComponent implements OnInit, AfterViewInit {
           this.conversationList.push(conversationItem);
         }
         this.conversation = this.conversationList[0];
+        console.log(this.conversation);
         this.conversationList[0].selected = true;
-        this.pollSub.unsubscribe();
+        if(this.pollSub){
+          this.pollSub.unsubscribe();
+        }
         this.updateMessages();
         this.pollMessages();
       });
