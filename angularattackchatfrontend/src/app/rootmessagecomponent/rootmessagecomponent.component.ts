@@ -49,55 +49,80 @@ export class RootmessagecomponentComponent implements OnInit, AfterViewInit {
 
    //get all the conversations
     this.conversationService.getAll().subscribe((data: any[]) => {
-      
-      for(let i = 0; i < data.length; i++){
-        let conversationItem = new ConversationItem();
-        conversationItem.id = data[i].conversation_id;
-        conversationItem.conversationItemTitle = data[i].conversation_name;
-         if(data[i].message_text === null) {
-          conversationItem.conversationItemText = "";
-        } 
-        else {
-          conversationItem.conversationItemText = data[i].message_text;
-        }
-        if(data[i].m_id > this.lastMessageId){
-          this.lastMessageId = data[i].m_id;
-        }
-        this.conversationList.push(conversationItem);
+      if(data != null && data.length > 0) {
+        console.log("Test");
+          for(let i = 0; i < data.length; i++){
+            let conversationItem = new ConversationItem();
+            conversationItem.id = data[i].conversation_id;
+            conversationItem.conversationItemTitle = data[i].conversation_name;
+            if(data[i].message_text === null) {
+              conversationItem.conversationItemText = "";
+            } 
+            else {
+              conversationItem.conversationItemText = data[i].message_text;
+            }
+            if(data[i].m_id > this.lastMessageId){
+              this.lastMessageId = data[i].m_id;
+            }
+            this.conversationList.push(conversationItem);
+          }
+          this.conversation = this.conversationList[0];
+          this.conversationList[0].selected = true;
+          this.updateMessages();
+          this.pollMessages();
+          this.messageService.getNewestMessage().subscribe( (result) => {
+            console.log(this.lastMessageId + "     " + result[0].message_id);
+            if(result[0].message_id > this.lastMessageId){
+              console.log(result.message_id);
+              this.notifyMe(result[0].message_sender + " Says  " + result[0].message_text);
+              this.lastMessageId = result[0].message_id;
+            }
+          });
       }
-      this.conversation = this.conversationList[0];
-      this.conversationList[0].selected = true;
-      this.updateMessages();
-      this.pollMessages();
-      this.messageService.getNewestMessage().subscribe( (result) => {
-        console.log(this.lastMessageId + "     " + result[0].message_id);
-        if(result[0].message_id > this.lastMessageId){
-          console.log(result.message_id);
-          this.notifyMe(result[0].message_sender + " Says  " + result[0].message_text);
-          this.lastMessageId = result[0].message_id;
-        }
-      });
+    
     });
     
     
     this.conversationService.getAllPoll().subscribe((data: any[]) => {
-      this.conversationList = [];
-      for(let i = 0; i < data.length; i++){
-        let conversationItem = new ConversationItem();
-        conversationItem.id = data[i].conversation_id;
-        conversationItem.conversationItemTitle = data[i].conversation_name;
-        if(data[i].message_text === null) {
-          conversationItem.conversationItemText = "";
-        } 
-        else {
-          conversationItem.conversationItemText = data[i].message_text;
+      console.log(data.length);
+      if(data != null && data.length > 0 ) {
+          console.log("Test1");
+         this.conversationList = [];
+          for(let i = 0; i < data.length; i++){
+            let conversationItem = new ConversationItem();
+            conversationItem.id = data[i].conversation_id;
+            conversationItem.conversationItemTitle = data[i].conversation_name;
+            if(data[i].message_text === null) {
+              conversationItem.conversationItemText = "";
+            } 
+            else {
+              conversationItem.conversationItemText = data[i].message_text;
+            }
+            if(this.conversation != null) {
+              if(conversationItem.id == this.conversation.id){
+                conversationItem.selected = true;
+              }
+            } 
+            
+            this.conversationList.push(conversationItem);
+            if(this.conversation == null){
+              this.conversation = this.conversationList[0];
+              this.conversationList[0].selected = true;
+              this.updateMessages();
+              this.pollMessages();
+              this.messageService.getNewestMessage().subscribe( (result) => {
+                console.log(this.lastMessageId + "     " + result[0].message_id);
+                if(result[0].message_id > this.lastMessageId){
+                  console.log(result.message_id);
+                  this.notifyMe(result[0].message_sender + " Says  " + result[0].message_text);
+                  this.lastMessageId = result[0].message_id;
+                }
+              });
+            }//end if
+          }
         }
-        if(conversationItem.id == this.conversation.id){
-          conversationItem.selected = true;
-        }
-        this.conversationList.push(conversationItem);
-      }
-    });
+      });
+     
    
   }
   notifyMe(message : string) {
