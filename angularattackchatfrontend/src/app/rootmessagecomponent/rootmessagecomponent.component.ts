@@ -13,6 +13,7 @@ import { RouteParams, Router } from '@angular/router-deprecated';
 declare var componentHandler;
 // declare var dialog;
 declare function showModal();
+declare var Notification;
 
 @Component({
   moduleId: module.id,
@@ -32,6 +33,7 @@ export class RootmessagecomponentComponent implements OnInit, AfterViewInit {
   public curretUserId : number = localStorage.getItem('user_id');
   public pollSub : any;
   public conversationTxt: string;
+  public lastMessageId : number = 0;
   constructor(private messageSubmitService: MessageSubmitService, 
               private conversationSelectService: ConversationSelectService,
               private conversationService: ConversationService,
@@ -43,25 +45,76 @@ export class RootmessagecomponentComponent implements OnInit, AfterViewInit {
     this.conversationList = new Array<ConversationItem>();
     this.messageList = new Array<MessageItem>();
     this.allMessageList = new Array<MessageItem>();
-    
    
 
-    // var username = prompt("Give me a username");
+   //get all the conversations
     this.conversationService.getAll().subscribe((data: any[]) => {
-      console.log(data);
+      
       for(let i = 0; i < data.length; i++){
         let conversationItem = new ConversationItem();
         conversationItem.id = data[i].conversation_id;
         conversationItem.conversationItemTitle = data[i].conversation_name;
+        conversationItem.conversationItemText = data[i].message_text;
+        if(data[i].m_id > this.lastMessageId){
+          this.lastMessageId = data[i].m_id;
+        }
         this.conversationList.push(conversationItem);
       }
       this.conversation = this.conversationList[0];
       this.conversationList[0].selected = true;
       this.updateMessages();
       this.pollMessages();
+      this.messageService.getNewestMessage().subscribe( (result) => {
+        console.log(this.lastMessageId + "     " + result[0].message_id);
+        if(result[0].message_id > this.lastMessageId){
+          console.log(result.message_id);
+          this.notifyMe(result[0].message_sender + " Says  " + result[0].message_text);
+          this.lastMessageId = result[0].message_id;
+        }
+      });
+    });
+    
+    
+    this.conversationService.getAllPoll().subscribe((data: any[]) => {
+      this.conversationList = [];
+      for(let i = 0; i < data.length; i++){
+        let conversationItem = new ConversationItem();
+        conversationItem.id = data[i].conversation_id;
+        conversationItem.conversationItemTitle = data[i].conversation_name;
+        conversationItem.conversationItemText = data[i].message_text;
+        if(conversationItem.id == this.conversation.id){
+          conversationItem.selected = true;
+        }
+        this.conversationList.push(conversationItem);
+      }
     });
    
   }
+  notifyMe(message : string) {
+  // Let's check if the browser supports notifications
+  if (!("Notification" in window)) {
+    alert("This browser does not support system notifications");
+  }
+
+  // Let's check whether notification permissions have already been granted
+  else if (Notification.permission === "granted") {
+    // If it's okay let's create a notification
+    var notification = new Notification(message);
+  }
+
+  // Otherwise, we need to ask the user for permission
+  else if (Notification.permission !== 'denied') {
+    Notification.requestPermission(function (permission) {
+      // If the user accepts, let's create a notification
+      if (permission === "granted") {
+        var notification = new Notification(message);
+      }
+    });
+  }
+
+  // Finally, if the user has denied notifications and you 
+  // want to be respectful there is no need to bother them any more.
+}
   ngAfterViewInit() {
       componentHandler.upgradeAllRegistered();
   }
@@ -78,6 +131,9 @@ export class RootmessagecomponentComponent implements OnInit, AfterViewInit {
           messageItem.owner = result[i].message_owner;
           messageItem.messageSender = result[i].message_sender;
           messageItem.messageText = result[i].message_text;
+          if(messageItem.id > this.lastMessageId) {
+            this.lastMessageId = messageItem.id;
+          }
           this.messageList.push(messageItem);
            setTimeout( () => {
             //let's hack the scroll to the bottom?
@@ -99,6 +155,9 @@ export class RootmessagecomponentComponent implements OnInit, AfterViewInit {
           messageItem.owner = result[i].message_owner;
           messageItem.messageSender = result[i].message_sender;
           messageItem.messageText = result[i].message_text;
+          if(messageItem.id > this.lastMessageId) {
+            this.lastMessageId = messageItem.id;
+          }
           this.messageList.push(messageItem);
           setTimeout( () => {
             //let's hack the scroll to the bottom?
@@ -108,9 +167,7 @@ export class RootmessagecomponentComponent implements OnInit, AfterViewInit {
         }
     });
   }
-  sortConversations() {
-    
-  }
+  
   
   
   ngOnInit() {
@@ -146,7 +203,6 @@ export class RootmessagecomponentComponent implements OnInit, AfterViewInit {
         messageItem.owner = true;
         messageItem.messageOwnerId = this.curretUserId;
         this.messageService.insertMessage(messageItem).subscribe(result => {
-          console.log(result);
           this.updateMessages();
         });
         
@@ -206,11 +262,11 @@ export class RootmessagecomponentComponent implements OnInit, AfterViewInit {
     var dialog = <any> document.querySelector('dialog');
     dialog.close();
     
-    console.log(this.conversationTxt);
     this.conversationService.postNewConversation(this.conversationTxt + "," + this.currentUser).subscribe((result) => {
       console.log(result);
       this.conversationService.getAll().subscribe((data: any[]) => {
          this.conversationList = [];
+         this.messageList = [];
          for(let i = 0; i < data.length; i++){
           let conversationItem = new ConversationItem();
           conversationItem.id = data[i].conversation_id;
@@ -219,7 +275,9 @@ export class RootmessagecomponentComponent implements OnInit, AfterViewInit {
         }
         this.conversation = this.conversationList[0];
         this.conversationList[0].selected = true;
+        this.pollSub.unsubscribe();
         this.updateMessages();
+        this.pollMessages();
       });
     });
   }

@@ -1,6 +1,9 @@
-  <div [ngClass]="{selected: conversationItem.selected}" class="mdl-list__item conversation-list-item">
+  <li [ngClass]="{selected: conversationItem.selected}" class="mdl-list__item conversation-list-item mdl-list__item--two-line">
     <span class="mdl-list__item-primary-content">
       <i class="material-icons mdl-list__item-avatar"></i>
       <span>{{conversationItem.conversationItemTitle}}</span>
-      </span>
-  </div>
+      <span class="mdl-list__item-sub-title">{{conversationItem.conversationItemText | slice:0:20}}</span>  
+    </span>
+   
+ 
+  </li>

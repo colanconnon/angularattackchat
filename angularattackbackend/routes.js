@@ -96,9 +96,14 @@ router.post('/newmessage', function*(next) {
 router.get('/getallconversation', function*(next) {
     var username = this.state.user.user;
     console.log(this.state.user);
-    var sql = `SELECT conversation_id, conversation_name
-    FROM public.conversation 
-    where conversation.conversation_name like $1;`
+    var sql = `select m1.conversation_id, m1.conversation_name, m1.m_id, message_text from (select  conversation_id, conversation_name,MAX(message_id) as m_id
+        from conversation 
+        inner join message on message.message_conversation = conversation.conversation_id
+        where conversation.conversation_name like $1
+        Group By Conversation_id
+        order by MAX(message_id) ASC) as m1
+        inner join message on m1.m_id = message.message_id
+        order by m1.m_id DESC;`
     var conversations = yield this.pg.db.client.query_(sql, ['%'+ username + '%']);
     conversations = conversations.rows;
     this.body = conversations;
@@ -118,6 +123,15 @@ router.get('/getallMessageByConversation/:conversation_id', function*(next){
     this.status = 200;
 });
 
+router.get('/getnewestMessage', function*(next){
+   var user_id = this.state.user.id;
+   
+   var sql = `select * from message where message_user = $1 and message_owner = 'f' ORDER BY message_id DESC LIMIT 1;`;
+   var messages = yield this.pg.db.client.query_(sql, [user_id]);
+   messages = messages.rows;
+   this.body = messages;
+   this.status = 200; 
+});
 router.get('/getuserid/:username', function*(next) {
    var username = this.params.username;
    var sql = `select user_id, username from users where username = $1`;
@@ -127,5 +141,7 @@ router.get('/getuserid/:username', function*(next) {
    this.status = 200;
     
 });
+
+
 
 module.exports = router;

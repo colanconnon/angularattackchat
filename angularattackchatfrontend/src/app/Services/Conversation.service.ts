@@ -20,6 +20,16 @@ export class ConversationService {
                    
     }
     
+     getAllPoll() {
+        let headers = new Headers({'Content-Type': 'application/json'});
+        headers.append('Accept', 'application/json');
+        //hardcoded for now
+        headers.append('Authorization', 'Bearer ' + this.token);
+        let options = new RequestOptions({headers: headers});
+        return Observable.interval(6000).switchMap(() => this.http.get(this.conversationurl, options)).map(res => res.json());
+                   
+    }
+    
     postNewConversation(conversationName: string) {
         let body = JSON.stringify({
             name: conversationName

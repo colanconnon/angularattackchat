@@ -10,6 +10,7 @@ export class MessageService {
     private getUserIdUrl: string = "http://localhost:3000/getuserid/";
     private newMessageUrl: string = "http://localhost:3000/newmessage";
     private getMessagesUrl: string = "http://localhost:3000/getallmessageByConversation/";
+    private getNewestMessageURL : string = "http://localhost:3000/getnewestmessage";
     private token : string = localStorage.getItem('Token');
     
     constructor(private http: Http) { }
@@ -58,6 +59,15 @@ export class MessageService {
         
         headers.append('Authorization', 'Bearer ' + this.token);
         let options = new RequestOptions({headers: headers});
-        return Observable.interval(5000).switchMap(() => this.http.get(this.getMessagesUrl + id, options)).map(res => res.json()).do((result) => console.log(result));
+        return Observable.interval(5000).switchMap(() => this.http.get(this.getMessagesUrl + id, options)).map(res => res.json());
+    }
+    
+    getNewestMessage() {
+        let headers = new Headers({'Content-Type': 'application/json'});
+        headers.append('Accept', 'application/json');
+        
+        headers.append('Authorization', 'Bearer ' + this.token);
+        let options = new RequestOptions({headers: headers});
+        return Observable.interval(5000).switchMap(() => this.http.get(this.getNewestMessageURL, options)).map(res => res.json());
     }
 }
