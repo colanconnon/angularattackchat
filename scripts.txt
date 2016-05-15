@@ -1,0 +1,2 @@
+-- to deploy the backend app to heroku
+git subtree push --prefix angularattackbackend heroku master

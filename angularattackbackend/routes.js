@@ -4,7 +4,7 @@ var parse = require("co-body");
 var router = require('koa-router')();
 var bcrypt = require('co-bcrypt');
 var jwt = require('koa-jwt');
-var secret = require('./secrets').jwt;
+var secret = process.env.jwt;
 
 router.get('/', function*(next){
    this.body = "hello"; 

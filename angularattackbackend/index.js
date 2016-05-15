@@ -4,11 +4,12 @@ var app = koa();
 var router = require('koa-router')();
 var jwt = require('koa-jwt');
 var routes = require('./routes')
-var secret = require('./secrets').jwt;
+// var secret = require('./secrets').jwt;
+var secret = process.env.jwt;
 var koaPg = require('koa-pg');
 var koaPg = require('koa-pg')
-var postgresConn = require('./secrets').dbstring
-
+// var postgresConn = require('./secrets').dbstring
+var postgresConn = process.env.DATABASE_URL;
 
 
 app.use(koaPg(postgresConn))
