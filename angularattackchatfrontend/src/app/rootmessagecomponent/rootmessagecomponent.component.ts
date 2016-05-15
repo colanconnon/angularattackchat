@@ -269,5 +269,10 @@ export class RootmessagecomponentComponent implements OnInit, AfterViewInit {
       });
     });
   }
+  
+  logout() {
+    localStorage.clear();
+    this.router.navigate(['Login']);
+  }
 
 }
