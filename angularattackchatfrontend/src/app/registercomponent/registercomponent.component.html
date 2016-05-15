@@ -29,22 +29,25 @@
    <br />
    <br />
   <div class="mdl-textfield mdl-js-textfield">
-    <input [(ngModel)]="password" class="mdl-textfield__input" type="text" id="Password">
+    <input [(ngModel)]="password" class="mdl-textfield__input" type="password" id="Password">
     <label class="mdl-textfield__label" for="username">Password</label>
   </div>
   <br />
    <br />
   <div class="mdl-textfield mdl-js-textfield">
-    <input [(ngModel)]="confirmPassword" class="mdl-textfield__input" type="text" id="ConfirmPassword">
+    <input [(ngModel)]="confirmPassword" class="mdl-textfield__input" type="password" id="ConfirmPassword">
     <label class="mdl-textfield__label" for="username">Confirm Password</label>
   </div>
    <br />
   <br />
-  <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+  <button (click)="Register()" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
     Register
   </button>
   </div>
-  
+  <div id="register_snackbar" class="mdl-js-snackbar mdl-snackbar">
+    <div class="mdl-snackbar__text"></div>
+    <button class="mdl-snackbar__action" type="button"></button>
+  </div>
  
 </div>
 

@@ -28,9 +28,23 @@ export class LogincomponentComponent implements OnInit, AfterViewInit {
   Login() {
     console.log(this.username + " " + this.password);
     this.loginService.Login(this.username, this.password).subscribe( (result) => {
-      console.log(result);
+      var snackbar = <any> document.querySelector("#login_snackbar");
+      
+      var data = {
+        message: 'You are now logged in',
+        timeout: 3000
+      };
+      snackbar.MaterialSnackbar.showSnackbar(data);
       this.router.navigate(['Home']);
-    });
+    }, (error) => {
+      var snackbar = <any> document.querySelector("#login_snackbar");
+      
+      var data = {
+        message: 'Error logging in, check your username and password and try again',
+        timeout: 3000
+      };
+      snackbar.MaterialSnackbar.showSnackbar(data);
+  });
   }
   
   goToRegister() {

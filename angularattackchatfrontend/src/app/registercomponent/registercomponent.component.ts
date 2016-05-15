@@ -26,6 +26,24 @@ export class RegistercomponentComponent implements OnInit, AfterViewInit {
   
   Register() {
     
+    this.registerService.Register(this.username, this.password, this.confirmPassword).subscribe((result) => {
+      console.log(result);
+      var snackbar = <any> document.querySelector("#register_snackbar");
+      
+      var data = {
+        message: 'You are now registered with username: ' + result.username ,
+        timeout: 3000
+      };
+      snackbar.MaterialSnackbar.showSnackbar(data);
+    }, (error) => {
+      var snackbar = <any> document.querySelector("#register_snackbar");
+      
+      var data = {
+        message: 'Error registering, please check all fields and try again',
+        timeout: 3000
+      };
+      snackbar.MaterialSnackbar.showSnackbar(data);
+    });
   }
   
   goToLogin() {
