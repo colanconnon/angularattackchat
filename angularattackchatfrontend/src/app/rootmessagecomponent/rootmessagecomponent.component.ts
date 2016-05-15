@@ -108,7 +108,7 @@ export class RootmessagecomponentComponent implements OnInit, AfterViewInit {
             if(this.conversation == null){
               this.conversation = this.conversationList[0];
               this.conversationList[0].selected = true;
-              this.updateMessages();
+
               this.pollMessages();
 
               this.messageService.getNewestMessage().subscribe( (result) => {
